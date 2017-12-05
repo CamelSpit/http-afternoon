@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Hero from './subcomponents/Hero';
 import BlogThumb from './subcomponents/BlogThumb';
+import axios from "axios";
 
 // import axios
 
@@ -14,12 +15,29 @@ class Home extends Component{
         }
     }
 
-    // insert componentWillMount:
+    componentWillMount(){
+        let promise=axios.get("/api/featured")
+
+        promise.then(res=>{
+            console.log(res);
+            this.setState({
+                featured: res.data,
+                posts: res.data,
+                index: (~~(Math.random() * res.data.length) + 0)   //I change this from "results to res.data.length"
+            })
+        }).catch(console.log())
+    }
     
 
     render(){
         // map over your recommended blogs here, replace null.
-        const posts = null
+        const posts = this.state.posts.map((blog,i)=>{
+
+            <BlogThumb key={i}>{blog}</BlogThumb>
+
+        })
+
+
 
         return(
             <div className="content" >
